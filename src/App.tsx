@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import Store from "./store";
+import { Address, Restaurant } from "./model/restaurant";
+import BestMenu from "./BestMenu";
 
-function App() {
+let data: Restaurant = {
+  name: "my restaurant",
+  category: "Korean foods",
+  address: {
+    city: "Munich",
+    detail: "Sonnenstr 92",
+    zipCode: 25367,
+  },
+  menu: [
+    { name: "pasta", price: 20, category: "italian" },
+    { name: "pizza", price: 24, category: "italian" },
+  ],
+};
+
+const App: React.FC = () => {
+  const [myRestaurant, setMyRestauran] = useState<Restaurant>(data);
+  const ChangeAddress = (address: Address) => {
+    setMyRestauran({ ...myRestaurant, address: address });
+  };
+  const showBestMenuName = (name: string) => {
+    return name;
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Store info={data} changeAddress={ChangeAddress} />
+      <BestMenu
+        name="seafood"
+        category="japanese"
+        price={100}
+        showBestMenuName={showBestMenuName}
+      />
     </div>
   );
-}
+};
 
 export default App;
